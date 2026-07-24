@@ -61,7 +61,7 @@
             background: linear-gradient(135deg, var(--blue-primary), var(--blue-light));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-        .navbar-right { display: flex; align-items: center; gap: 1rem; }
+        .navbar-right { display: flex; align-items: center; gap: 0.6rem; }
         .admin-status {
             font-size: 0.75rem; padding: 0.3rem 0.7rem; border-radius: 50px;
             display: none; align-items: center; gap: 0.4rem;
@@ -70,7 +70,15 @@
             display: flex; background: rgba(34,197,94,0.15); color: var(--green);
             border: 1px solid rgba(34,197,94,0.3);
         }
-        .admin-status .dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; }
+        .user-status {
+            font-size: 0.75rem; padding: 0.3rem 0.7rem; border-radius: 50px;
+            display: none; align-items: center; gap: 0.4rem; max-width: 140px; overflow: hidden;
+        }
+        .user-status.logged-in {
+            display: flex; background: rgba(59,130,246,0.15); color: var(--blue-light);
+            border: 1px solid rgba(59,130,246,0.3);
+        }
+        .user-status .dot { width: 6px; height: 6px; background: var(--blue-light); border-radius: 50%; flex-shrink: 0; }
         .logout-btn {
             background: none; border: 1px solid var(--red); color: var(--red);
             padding: 0.3rem 0.7rem; border-radius: 50px; font-size: 0.75rem;
@@ -95,7 +103,7 @@
         .sidebar.active { left: 0; }
         .sidebar-header {
             display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);
         }
         .sidebar-close {
             background: none; border: none; color: var(--text-secondary);
@@ -103,17 +111,17 @@
         }
         .sidebar-close:hover { color: var(--blue-primary); }
         .sidebar-links { list-style: none; flex: 1; }
-        .sidebar-links li { margin-bottom: 0.5rem; }
-        .sidebar-links a {
+        .sidebar-links li { margin-bottom: 0.3rem; }
+        .sidebar-links a, .sidebar-links button {
             display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem 1rem;
             border-radius: 10px; color: var(--text-secondary); font-size: 0.9rem;
-            transition: all 0.3s;
+            transition: all 0.3s; width: 100%; border: none; background: none; cursor: pointer;
+            text-align: left; font-family: inherit;
         }
-        .sidebar-links a:hover { background: rgba(59,130,246,0.1); color: var(--blue-primary); }
-        .sidebar-links a svg { width: 20px; height: 20px; }
-        .sidebar-links .login-item {
-            margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color);
-        }
+        .sidebar-links a:hover, .sidebar-links button:hover { background: rgba(59,130,246,0.1); color: var(--blue-primary); }
+        .sidebar-links a svg, .sidebar-links button svg { width: 20px; height: 20px; flex-shrink: 0; }
+        .sidebar-divider { margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid var(--border-color); }
+        .sidebar-guest-links { margin-bottom: 0.8rem; }
 
         /* HERO */
         .hero {
@@ -193,9 +201,10 @@
         .product-info { padding: 1.2rem; }
         .product-name { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.3rem; }
         .product-desc { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.8rem; }
-        .product-bottom { display: flex; align-items: center; justify-content: space-between; }
-        .product-price { font-size: 1.2rem; font-weight: 700; color: var(--blue-light); }
-        .product-days { font-size: 0.75rem; color: var(--text-muted); margin-left: 0.5rem; }
+        .product-bottom { display: flex; flex-direction: column; gap: 0.3rem; }
+        .product-price-row { display: flex; align-items: center; gap: 0.4rem; }
+        .product-price { font-size: 1rem; font-weight: 700; color: var(--blue-light); }
+        .product-days { font-size: 0.75rem; color: var(--text-muted); }
         .admin-delete-btn {
             position: absolute; top: 10px; right: 10px; width: 32px; height: 32px;
             background: rgba(239,68,68,0.8); border: none; border-radius: 8px; color: #fff;
@@ -264,8 +273,29 @@
         .modal-btn:hover { background: var(--blue-secondary); box-shadow: 0 0 25px var(--blue-glow); }
         .modal-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
+        .modal-switch { text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted); }
+        .modal-switch a { color: var(--blue-primary); cursor: pointer; text-decoration: underline; }
+        .modal-switch a:hover { color: var(--blue-light); }
+
         .error-msg { color: var(--red); font-size: 0.85rem; text-align: center; margin-top: 0.8rem; display: none; }
         .error-msg.visible { display: block; }
+        .success-msg { color: var(--green); font-size: 0.85rem; text-align: center; margin-top: 0.8rem; display: none; }
+        .success-msg.visible { display: block; }
+
+        /* DIVIDER */
+        .divider { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border-color); }
+        .divider span { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* GOOGLE BTN */
+        .google-btn {
+            width: 100%; padding: 0.8rem; background: #fff; color: #333;
+            border: 1px solid #ddd; border-radius: 10px; font-size: 0.9rem; font-weight: 500;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+            transition: all 0.3s; font-family: inherit;
+        }
+        .google-btn:hover { background: #f5f5f5; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .google-btn svg { width: 20px; height: 20px; }
 
         /* PRICE TYPE TOGGLE */
         .price-type-toggle { display: flex; gap: 0.5rem; margin-bottom: 1.2rem; }
@@ -277,17 +307,37 @@
         .price-type-btn.active {
             background: var(--blue-primary); border-color: var(--blue-primary); color: #fff;
         }
-        .days-selector { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; margin-bottom: 1.2rem; }
+
+        /* DAYS MULTI-SELECT */
+        .days-selector { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; margin-bottom: 1rem; }
         .day-btn {
-            padding: 0.5rem; background: var(--bg-card); border: 1px solid var(--border-color);
-            border-radius: 8px; color: var(--text-secondary); font-size: 0.8rem;
+            padding: 0.6rem 0.3rem; background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 10px; color: var(--text-secondary); font-size: 0.8rem;
             cursor: pointer; transition: all 0.3s; text-align: center; font-weight: 500;
         }
-        .day-btn.active {
+        .day-btn.selected {
             background: rgba(59,130,246,0.15); border-color: var(--blue-primary); color: var(--blue-light);
         }
-        .price-fields { display: none; }
-        .price-fields.active { display: block; }
+
+        /* DAY PRICE INPUTS */
+        .day-price-inputs { margin-bottom: 1.2rem; }
+        .day-price-row {
+            display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.6rem;
+            padding: 0.5rem 0.8rem; background: var(--bg-card); border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .day-price-label { font-size: 0.85rem; color: var(--text-secondary); min-width: 80px; }
+        .day-price-input {
+            flex: 1; padding: 0.5rem 0.8rem; background: var(--bg-secondary);
+            border: 1px solid var(--border-color); border-radius: 8px;
+            color: var(--text-primary); font-size: 0.85rem; outline: none;
+        }
+        .day-price-input:focus { border-color: var(--blue-primary); }
+        .day-price-remove {
+            background: none; border: none; color: var(--red); cursor: pointer;
+            font-size: 1rem; padding: 0.2rem; transition: transform 0.2s;
+        }
+        .day-price-remove:hover { transform: scale(1.2); }
 
         /* IMAGE PREVIEW */
         .image-preview {
@@ -342,6 +392,7 @@
             .hero h1 { font-size: 2.2rem; }
             .products-grid { grid-template-columns: 1fr; }
             .days-selector { grid-template-columns: repeat(3, 1fr); }
+            .modal { padding: 2rem 1.5rem; }
         }
     </style>
 </head>
@@ -367,10 +418,22 @@
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                 Productos
             </a></li>
-            <li class="login-item"><a href="#" id="loginLink" onclick="openLoginModal(); closeSidebar(); return false;">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
-                Iniciar Sesión
+            <li id="editAccountItem" style="display:none;"><a href="#" onclick="openEditAccount(); closeSidebar(); return false;">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                Editar Cuenta
             </a></li>
+            <li class="sidebar-divider" id="guestLinks">
+                <ul class="sidebar-links sidebar-guest-links" style="margin-top:0;">
+                    <li><a href="#" id="loginLink" onclick="openLoginModal(); closeSidebar(); return false;">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+                        Iniciar Sesión
+                    </a></li>
+                    <li><a href="#" id="registerLink" onclick="openRegisterModal(); closeSidebar(); return false;">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                        Crear Cuenta
+                    </a></li>
+                </ul>
+            </li>
         </ul>
     </nav>
 
@@ -388,6 +451,10 @@
             <div class="admin-status" id="adminStatus">
                 <span class="dot"></span>
                 Admin
+            </div>
+            <div class="user-status" id="userStatus">
+                <span class="dot"></span>
+                <span class="user-name-text">Usuario</span>
             </div>
             <button class="logout-btn" id="logoutBtn" onclick="logout()">Salir</button>
         </div>
@@ -461,18 +528,88 @@
         <div class="modal">
             <button class="modal-close" onclick="closeLoginModal()">&times;</button>
             <h2>Iniciar Sesión</h2>
-            <p class="subtitle">Acceso para administradores</p>
+            <p class="subtitle">Accede a tu cuenta</p>
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label>Usuario</label>
-                    <input type="text" id="loginUser" placeholder="Ingresa tu usuario" autocomplete="off">
+                    <input type="text" id="loginUser" placeholder="Ingresa tu usuario" autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label>Contraseña</label>
-                    <input type="password" id="loginPass" placeholder="Ingresa tu contraseña">
+                    <input type="password" id="loginPass" placeholder="Ingresa tu contraseña" required>
                 </div>
                 <button type="submit" class="modal-btn">Entrar</button>
                 <p class="error-msg" id="loginError">Usuario o contraseña incorrectos</p>
+                <div class="divider"><span>o</span></div>
+                <button type="button" class="google-btn" onclick="handleGoogleLogin()">
+                    <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+                    Continuar con Google
+                </button>
+                <p class="modal-switch">¿No tienes cuenta? <a onclick="closeLoginModal(); openRegisterModal();">Crear cuenta</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- REGISTER MODAL -->
+    <div class="modal-overlay" id="registerModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeRegisterModal()">&times;</button>
+            <h2>Crear Cuenta</h2>
+            <p class="subtitle">Regístrate como usuario</p>
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>Usuario</label>
+                    <input type="text" id="regUser" placeholder="Elige un nombre de usuario" autocomplete="off" required>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="regPass" placeholder="Crea una contraseña" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirmar Contraseña</label>
+                    <input type="password" id="regPassConfirm" placeholder="Repite la contraseña" required>
+                </div>
+                <button type="submit" class="modal-btn" id="registerBtn">Crear Cuenta</button>
+                <p class="error-msg" id="registerError"></p>
+                <div class="divider"><span>o</span></div>
+                <button type="button" class="google-btn" onclick="handleGoogleLogin()">
+                    <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+                    Continuar con Google
+                </button>
+                <p class="modal-switch">¿Ya tienes cuenta? <a onclick="closeRegisterModal(); openLoginModal();">Iniciar sesión</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- EDIT ACCOUNT MODAL -->
+    <div class="modal-overlay" id="editAccountModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeEditAccount()">&times;</button>
+            <h2>Editar Cuenta</h2>
+            <p class="subtitle">Cambia tus datos</p>
+            <form id="editAccountForm" onsubmit="handleEditAccount(event)">
+                <div class="form-group">
+                    <label>Nombre de Usuario</label>
+                    <input type="text" id="editUsername" placeholder="Nuevo nombre de usuario" autocomplete="off" required>
+                </div>
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="editEmail" placeholder="Tu correo electrónico">
+                </div>
+                <div class="form-group">
+                    <label>Nueva Contraseña <span style="color:var(--text-muted)">(opcional, dejar vacío para no cambiar)</span></label>
+                    <input type="password" id="editNewPass" placeholder="Nueva contraseña">
+                </div>
+                <div class="form-group">
+                    <label>Confirmar Contraseña</label>
+                    <input type="password" id="editNewPassConfirm" placeholder="Repite la nueva contraseña">
+                </div>
+                <button type="submit" class="modal-btn" id="editAccountBtn">Guardar Cambios</button>
+                <p class="error-msg" id="editAccountError"></p>
+                <p class="success-msg" id="editAccountSuccess"></p>
+                <p style="margin-top:0.5rem;font-size:0.75rem;color:var(--text-muted);text-align:center;">
+                    Nota: Los cambios de contraseña se guardan localmente. Para Google, se guarda en Firebase Auth.
+                </p>
             </form>
         </div>
     </div>
@@ -508,22 +645,21 @@
                         <button type="button" class="price-type-btn" data-type="unico" onclick="setPriceType('unico')">Precio Único</button>
                     </div>
                 </div>
+                <!-- DIAS: multi-select days with individual prices -->
                 <div class="price-fields active" id="diasFields">
                     <div class="form-group">
-                        <label>Duración</label>
-                        <div class="days-selector">
-                            <button type="button" class="day-btn" data-days="1" onclick="selectDays(1)">1 Día</button>
-                            <button type="button" class="day-btn" data-days="7" onclick="selectDays(7)">7 Días</button>
-                            <button type="button" class="day-btn" data-days="14" onclick="selectDays(14)">14 Días</button>
-                            <button type="button" class="day-btn" data-days="30" onclick="selectDays(30)">30 Días</button>
-                            <button type="button" class="day-btn" data-days="360" onclick="selectDays(360)">360 Días</button>
+                        <label>Selecciona las duraciones disponibles</label>
+                        <div class="days-selector" id="daysSelector">
+                            <button type="button" class="day-btn" data-days="1" onclick="toggleDay(1)">1 Día</button>
+                            <button type="button" class="day-btn" data-days="7" onclick="toggleDay(7)">7 Días</button>
+                            <button type="button" class="day-btn" data-days="14" onclick="toggleDay(14)">14 Días</button>
+                            <button type="button" class="day-btn" data-days="30" onclick="toggleDay(30)">30 Días</button>
+                            <button type="button" class="day-btn" data-days="360" onclick="toggleDay(360)">360 Días</button>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Precio para esa duración</label>
-                        <input type="text" id="prodPrice" placeholder="Ej: $5.99">
-                    </div>
+                    <div id="dayPriceInputs" class="day-price-inputs"></div>
                 </div>
+                <!-- UNICO: single price -->
                 <div class="price-fields" id="unicoFields">
                     <div class="form-group">
                         <label>Precio</label>
@@ -534,7 +670,7 @@
                     <label>Imagen / Captura</label>
                     <div class="image-preview" id="imagePreview" onclick="document.getElementById('prodImage').click()">
                         <div class="upload-text" id="uploadText">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="30" height="30"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                             <br>Click para subir captura
                         </div>
                     </div>
@@ -548,12 +684,13 @@
     <!-- TOAST -->
     <div class="toast" id="toast"></div>
 
-    <!-- FIREBASE via compatible CDN (not module) -->
+    <!-- FIREBASE via importmap -->
     <script type="importmap">
     {
         "imports": {
             "firebase/app": "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js",
-            "firebase/database": "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js"
+            "firebase/database": "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js",
+            "firebase/auth": "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js"
         }
     }
     </script>
@@ -561,7 +698,8 @@
     <!-- APP JAVASCRIPT -->
     <script type="module">
         import { initializeApp } from "firebase/app";
-        import { getDatabase, ref, onValue, push, remove, set } from "firebase/database";
+        import { getDatabase, ref, onValue, push, remove, set, get } from "firebase/database";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, updateEmail } from "firebase/auth";
 
         // ===== FIREBASE INIT =====
         const firebaseConfig = {
@@ -576,22 +714,47 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        const auth = getAuth(app);
         const productsRef = ref(db, 'productos');
+        const usersRef = ref(db, 'usuarios');
 
-        // ===== GLOBAL STATE =====
-        let isAdmin = false;
-        let currentFilter = 'todos';
-        let selectedDays = null;
-        let priceType = 'dias';
-        let imageData = '';
-
-        // Expose Firebase functions globally
         window._db = db;
         window._productsRef = productsRef;
+        window._usersRef = usersRef;
+        window._auth = auth;
         window._push = push;
         window._remove = remove;
         window._set = set;
         window._ref = ref;
+        window._get = get;
+        window._GoogleAuthProvider = GoogleAuthProvider;
+        window._signInWithPopup = signInWithPopup;
+        window._signOut = signOut;
+        window._onAuthStateChanged = onAuthStateChanged;
+        window._createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+        window._signInWithEmailAndPassword = signInWithEmailAndPassword;
+        window._updateProfile = updateProfile;
+        window._updateEmail = updateEmail;
+
+        // ===== GLOBAL STATE =====
+        let currentUser = null;
+        let currentFilter = 'todos';
+        let selectedDays = new Set();
+        let dayPrices = {};
+        let priceType = 'dias';
+        let imageData = '';
+        let loggedInType = null; // 'admin', 'user', 'google'
+
+        // ===== AUTH STATE LISTENER =====
+        window._onAuthStateChanged(window._auth, function(user) {
+            if (user) {
+                // Firebase Auth user (Google)
+                const displayName = user.displayName || user.email.split('@')[0];
+                currentUser = { type: 'google', username: displayName, email: user.email, uid: user.uid };
+                loggedInType = 'google';
+                updateUI();
+            }
+        });
 
         // ===== SIDEBAR =====
         const sidebar = document.getElementById('sidebar');
@@ -612,67 +775,344 @@
 
         // ===== LOGIN =====
         window.openLoginModal = function() {
-            if (isAdmin) return;
+            if (currentUser && currentUser.type === 'admin') return;
             document.getElementById('loginModal').classList.add('active');
             document.getElementById('loginError').classList.remove('visible');
+            document.getElementById('loginForm').reset();
         };
 
         window.closeLoginModal = function() {
             document.getElementById('loginModal').classList.remove('active');
         };
 
-        window.handleLogin = function(e) {
+        window.handleLogin = async function(e) {
             e.preventDefault();
             const user = document.getElementById('loginUser').value.trim();
             const pass = document.getElementById('loginPass').value.trim();
 
+            // Admin login
             if (user === 'Flexzin67' && pass === 'Flexzin67') {
-                isAdmin = true;
+                currentUser = { type: 'admin', username: 'Flexzin67' };
+                loggedInType = 'admin';
                 closeLoginModal();
-                updateAdminUI();
-                showToast('Bienvenido', 'success');
+                updateUI();
+                showToast('Bienvenido, Admin', 'success');
                 document.getElementById('loginForm').reset();
-            } else {
+                return;
+            }
+
+            // User login from Firebase RTDB
+            try {
+                const userSnap = await window._get(window._ref(window._db, 'usuarios/' + user));
+                const userData = userSnap.val();
+
+                if (userData && userData.password === pass && userData.role === 'user') {
+                    currentUser = { type: 'user', username: user, email: userData.email || '', method: 'password' };
+                    loggedInType = 'user';
+                    closeLoginModal();
+                    updateUI();
+                    showToast('Bienvenido, ' + user, 'success');
+                    document.getElementById('loginForm').reset();
+                } else {
+                    document.getElementById('loginError').textContent = 'Usuario o contraseña incorrectos';
+                    document.getElementById('loginError').classList.add('visible');
+                }
+            } catch(err) {
+                document.getElementById('loginError').textContent = 'Error al verificar cuenta';
                 document.getElementById('loginError').classList.add('visible');
             }
         };
 
-        window.logout = function() {
-            isAdmin = false;
-            updateAdminUI();
+        // ===== REGISTER =====
+        window.openRegisterModal = function() {
+            document.getElementById('registerModal').classList.add('active');
+            document.getElementById('registerError').classList.remove('visible');
+            document.getElementById('registerForm').reset();
+        };
+
+        window.closeRegisterModal = function() {
+            document.getElementById('registerModal').classList.remove('active');
+        };
+
+        window.handleRegister = async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('regUser').value.trim();
+            const password = document.getElementById('regPass').value;
+            const passwordConfirm = document.getElementById('regPassConfirm').value;
+            const errorEl = document.getElementById('registerError');
+            const btn = document.getElementById('registerBtn');
+
+            if (username.length < 3) {
+                errorEl.textContent = 'El usuario debe tener al menos 3 caracteres';
+                errorEl.classList.add('visible');
+                return;
+            }
+
+            if (password.length < 4) {
+                errorEl.textContent = 'La contraseña debe tener al menos 4 caracteres';
+                errorEl.classList.add('visible');
+                return;
+            }
+
+            if (password !== passwordConfirm) {
+                errorEl.textContent = 'Las contraseñas no coinciden';
+                errorEl.classList.add('visible');
+                return;
+            }
+
+            if (username === 'Flexzin67') {
+                errorEl.textContent = 'Ese nombre de usuario no está disponible';
+                errorEl.classList.add('visible');
+                return;
+            }
+
+            try {
+                const existingSnap = await window._get(window._ref(window._db, 'usuarios/' + username));
+                if (existingSnap.val()) {
+                    errorEl.textContent = 'Ese usuario ya existe';
+                    errorEl.classList.add('visible');
+                    return;
+                }
+
+                btn.disabled = true;
+                btn.textContent = 'Creando...';
+
+                await window._set(window._ref(window._db, 'usuarios/' + username), {
+                    password: password,
+                    role: 'user',
+                    createdAt: Date.now(),
+                    email: ''
+                });
+
+                currentUser = { type: 'user', username: username, email: '', method: 'password' };
+                loggedInType = 'user';
+                closeRegisterModal();
+                updateUI();
+                showToast('Cuenta creada exitosamente', 'success');
+                document.getElementById('registerForm').reset();
+            } catch(err) {
+                errorEl.textContent = 'Error al crear cuenta: ' + err.message;
+                errorEl.classList.add('visible');
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Crear Cuenta';
+        };
+
+        // ===== GOOGLE LOGIN =====
+        window.handleGoogleLogin = async function() {
+            try {
+                const provider = new window._GoogleAuthProvider();
+                const result = await window._signInWithPopup(window._auth, provider);
+                const user = result.user;
+                const displayName = user.displayName || user.email.split('@')[0];
+                currentUser = { type: 'google', username: displayName, email: user.email, uid: user.uid };
+                loggedInType = 'google';
+                closeLoginModal();
+                closeRegisterModal();
+                updateUI();
+                showToast('Bienvenido, ' + displayName, 'success');
+            } catch(err) {
+                if (err.code !== 'auth/popup-closed-by-user') {
+                    showToast('Error con Google: ' + err.message, 'error');
+                }
+            }
+        };
+
+        // ===== LOGOUT =====
+        window.logout = async function() {
+            currentUser = null;
+            loggedInType = null;
+            // Sign out from Firebase Auth if Google
+            try { await window._signOut(window._auth); } catch(e) {}
+            updateUI();
             showToast('Sesión cerrada', 'success');
         };
 
-        function updateAdminUI() {
-            const status = document.getElementById('adminStatus');
+        function updateUI() {
+            const adminStatus = document.getElementById('adminStatus');
+            const userStatus = document.getElementById('userStatus');
             const logoutBtn = document.getElementById('logoutBtn');
             const fab = document.getElementById('fabBtn');
-            const loginLink = document.getElementById('loginLink');
+            const guestLinks = document.getElementById('guestLinks');
+            const editAccountItem = document.getElementById('editAccountItem');
+            const userNameText = userStatus.querySelector('.user-name-text');
 
-            if (isAdmin) {
-                status.classList.add('logged-in');
+            // Reset all
+            adminStatus.classList.remove('logged-in');
+            userStatus.classList.remove('logged-in');
+            logoutBtn.classList.remove('visible');
+            fab.classList.remove('visible');
+            guestLinks.style.display = 'none';
+            editAccountItem.style.display = 'none';
+
+            if (currentUser) {
+                if (currentUser.type === 'admin') {
+                    adminStatus.classList.add('logged-in');
+                    fab.classList.add('visible');
+                    editAccountItem.style.display = 'none';
+                } else if (currentUser.type === 'user') {
+                    userNameText.textContent = currentUser.username;
+                    userStatus.classList.add('logged-in');
+                    guestLinks.style.display = 'none';
+                    editAccountItem.style.display = '';
+                } else if (currentUser.type === 'google') {
+                    userNameText.textContent = currentUser.username;
+                    userStatus.classList.add('logged-in');
+                    guestLinks.style.display = 'none';
+                    editAccountItem.style.display = '';
+                }
                 logoutBtn.classList.add('visible');
-                fab.classList.add('visible');
-                loginLink.parentElement.style.display = 'none';
-                document.querySelectorAll('.product-card').forEach(c => c.classList.add('admin-mode'));
             } else {
-                status.classList.remove('logged-in');
-                logoutBtn.classList.remove('visible');
-                fab.classList.remove('visible');
-                loginLink.parentElement.style.display = '';
-                document.querySelectorAll('.product-card').forEach(c => c.classList.remove('admin-mode'));
+                guestLinks.style.display = 'block';
             }
+
+            // Update product cards for admin mode
+            document.querySelectorAll('.product-card').forEach(card => {
+                if (currentUser && currentUser.type === 'admin') {
+                    card.classList.add('admin-mode');
+                } else {
+                    card.classList.remove('admin-mode');
+                }
+            });
         }
+
+        // ===== EDIT ACCOUNT =====
+        window.openEditAccount = function() {
+            if (!currentUser) return;
+            document.getElementById('editAccountModal').classList.add('active');
+            document.getElementById('editAccountError').classList.remove('visible');
+            document.getElementById('editAccountSuccess').classList.remove('visible');
+            document.getElementById('editAccountForm').reset();
+
+            // Pre-fill with current data
+            document.getElementById('editUsername').value = currentUser.username;
+            document.getElementById('editEmail').value = currentUser.email || '';
+        };
+
+        window.closeEditAccount = function() {
+            document.getElementById('editAccountModal').classList.remove('active');
+        };
+
+        window.handleEditAccount = async function(e) {
+            e.preventDefault();
+            const newUsername = document.getElementById('editUsername').value.trim();
+            const newEmail = document.getElementById('editEmail').value.trim();
+            const newPass = document.getElementById('editNewPass').value;
+            const newPassConfirm = document.getElementById('editNewPassConfirm').value;
+            const errorEl = document.getElementById('editAccountError');
+            const successEl = document.getElementById('editAccountSuccess');
+            const btn = document.getElementById('editAccountBtn');
+
+            errorEl.classList.remove('visible');
+            successEl.classList.remove('visible');
+
+            if (newUsername.length < 3) {
+                errorEl.textContent = 'El usuario debe tener al menos 3 caracteres';
+                errorEl.classList.add('visible');
+                return;
+            }
+
+            if (newPass && newPass.length < 4) {
+                errorEl.textContent = 'La contraseña debe tener al menos 4 caracteres';
+                errorEl.classList.add('visible');
+                return;
+            }
+
+            if (newPass && newPass !== newPassConfirm) {
+                errorEl.textContent = 'Las contraseñas no coinciden';
+                errorEl.classList.add('visible');
+                return;
+            }
+
+            if (newUsername === 'Flexzin67') {
+                errorEl.textContent = 'Ese nombre de usuario no está disponible';
+                errorEl.classList.add('visible');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Guardando...';
+
+            try {
+                const oldUsername = currentUser.username;
+                const oldMethod = currentUser.method || 'google';
+
+                if (loggedInType === 'google') {
+                    // Google user: update Firebase Auth display name and email
+                    const authUser = window._auth.currentUser;
+                    if (newUsername !== oldUsername) {
+                        await window._updateProfile(authUser, { displayName: newUsername });
+                    }
+                    if (newEmail && newEmail !== currentUser.email) {
+                        await window._updateEmail(authUser, newEmail);
+                    }
+                    currentUser.username = newUsername;
+                    currentUser.email = newEmail;
+                } else if (loggedInType === 'user') {
+                    // Password user: update in RTDB
+                    // Check if new username already exists (and it's not the same)
+                    if (newUsername !== oldUsername) {
+                        const existingSnap = await window._get(window._ref(window._db, 'usuarios/' + newUsername));
+                        if (existingSnap.val()) {
+                            errorEl.textContent = 'Ese usuario ya existe';
+                            errorEl.classList.add('visible');
+                            btn.disabled = false;
+                            btn.textContent = 'Guardar Cambios';
+                            return;
+                        }
+                        // Delete old user data
+                        await window._remove(window._ref(window._db, 'usuarios/' + oldUsername));
+                    }
+
+                    // Save user data
+                    const userData = {
+                        role: 'user',
+                        createdAt: Date.now(),
+                        email: newEmail || currentUser.email || ''
+                    };
+                    if (newPass) {
+                        userData.password = newPass;
+                    } else {
+                        // Keep old password
+                        const userSnap = await window._get(window._ref(window._db, 'usuarios/' + newUsername));
+                        const existingData = userSnap.val();
+                        userData.password = existingData ? existingData.password : '';
+                    }
+
+                    await window._set(window._ref(window._db, 'usuarios/' + newUsername), userData);
+                    currentUser.username = newUsername;
+                    currentUser.email = newEmail || currentUser.email || '';
+                    currentUser.method = 'password';
+                }
+
+                successEl.textContent = 'Cambios guardados exitosamente';
+                successEl.classList.add('visible');
+                updateUI();
+
+                setTimeout(function() {
+                    closeEditAccount();
+                }, 1500);
+            } catch(err) {
+                errorEl.textContent = 'Error: ' + err.message;
+                errorEl.classList.add('visible');
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Guardar Cambios';
+        };
 
         // ===== ADD PRODUCT MODAL =====
         window.openAddModal = function() {
-            if (!isAdmin) return;
+            if (!currentUser || currentUser.type !== 'admin') return;
             document.getElementById('addModal').classList.add('active');
             document.getElementById('addForm').reset();
             imageData = '';
-            selectedDays = null;
+            selectedDays.clear();
+            dayPrices = {};
             priceType = 'dias';
-            document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('selected'));
+            document.getElementById('dayPriceInputs').innerHTML = '';
             setPriceType('dias');
             document.getElementById('imagePreview').innerHTML = '<div class="upload-text"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="30" height="30"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><br>Click para subir captura</div>';
         };
@@ -695,10 +1135,44 @@
             }
         };
 
-        window.selectDays = function(days) {
-            selectedDays = days;
-            document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector('.day-btn[data-days="' + days + '"]').classList.add('active');
+        // ===== MULTI-SELECT DAYS =====
+        window.toggleDay = function(days) {
+            const btn = document.querySelector('.day-btn[data-days="' + days + '"]');
+            if (selectedDays.has(days)) {
+                selectedDays.delete(days);
+                btn.classList.remove('selected');
+                delete dayPrices[days];
+            } else {
+                selectedDays.add(days);
+                btn.classList.add('selected');
+            }
+            renderDayPriceInputs();
+        };
+
+        function renderDayPriceInputs() {
+            const container = document.getElementById('dayPriceInputs');
+            container.innerHTML = '';
+            const sortedDays = Array.from(selectedDays).sort((a, b) => a - b);
+            sortedDays.forEach(function(days) {
+                const row = document.createElement('div');
+                row.className = 'day-price-row';
+                row.innerHTML =
+                    '<span class="day-price-label">' + days + ' días</span>' +
+                    '<input type="text" class="day-price-input" placeholder="Ej: $5.99" data-days="' + days + '" value="' + (dayPrices[days] || '') + '" oninput="updateDayPrice(' + days + ', this.value)">' +
+                    '<button type="button" class="day-price-remove" onclick="removeDay(' + days + ')" title="Quitar">&times;</button>';
+                container.appendChild(row);
+            });
+        }
+
+        window.updateDayPrice = function(days, value) {
+            dayPrices[days] = value;
+        };
+
+        window.removeDay = function(days) {
+            selectedDays.delete(days);
+            delete dayPrices[days];
+            document.querySelector('.day-btn[data-days="' + days + '"]').classList.remove('selected');
+            renderDayPriceInputs();
         };
 
         // ===== IMAGE PREVIEW =====
@@ -739,7 +1213,7 @@
         // ===== ADD PRODUCT =====
         window.handleAddProduct = async function(e) {
             e.preventDefault();
-            if (!isAdmin) {
+            if (!currentUser || currentUser.type !== 'admin') {
                 showToast('Debes iniciar sesión como admin', 'error');
                 return;
             }
@@ -767,17 +1241,22 @@
             };
 
             if (priceType === 'dias') {
-                const price = document.getElementById('prodPrice').value.trim();
-                if (!selectedDays) {
-                    showToast('Selecciona la duración (días)', 'error');
+                if (selectedDays.size === 0) {
+                    showToast('Selecciona al menos una duración', 'error');
                     return;
                 }
-                if (!price) {
-                    showToast('Ingresa el precio', 'error');
-                    return;
+                const sortedDays = Array.from(selectedDays).sort((a, b) => a - b);
+                for (let i = 0; i < sortedDays.length; i++) {
+                    const d = sortedDays[i];
+                    if (!dayPrices[d] || !dayPrices[d].trim()) {
+                        showToast('Ingresa el precio para ' + d + ' días', 'error');
+                        return;
+                    }
                 }
-                productData.days = selectedDays;
-                productData.price = price;
+                productData.days = {};
+                sortedDays.forEach(function(d) {
+                    productData.days[d] = dayPrices[d];
+                });
             } else {
                 const priceUnico = document.getElementById('prodPriceUnico').value.trim();
                 if (!priceUnico) {
@@ -806,8 +1285,11 @@
 
         // ===== DELETE PRODUCT =====
         window.deleteProduct = async function(id) {
-            if (!isAdmin) return;
-            if (!confirm('¿Eliminar este producto?')) return;
+            if (!currentUser || currentUser.type !== 'admin') {
+                showToast('Solo el admin puede eliminar productos', 'error');
+                return;
+            }
+            if (!confirm('¿Eliminar este producto? Esta acción no se puede deshacer.')) return;
 
             try {
                 const itemRef = window._ref(window._db, 'productos/' + id);
@@ -882,7 +1364,7 @@
 
         function createProductCard(item) {
             const card = document.createElement('div');
-            card.className = 'product-card' + (isAdmin ? ' admin-mode' : '');
+            card.className = 'product-card' + (currentUser && currentUser.type === 'admin' ? ' admin-mode' : '');
             card.dataset.game = item.game;
             card.dataset.id = item.id;
 
@@ -894,11 +1376,16 @@
                 imageHTML = '<img src="' + item.image + '" alt="' + item.name + '" onerror="this.parentElement.innerHTML=\'<div class=placeholder-text>Error al cargar</div>\'">';
             }
 
-            let priceHTML = '';
-            if (item.priceType === 'dias') {
-                priceHTML = '<span class="product-price">' + (item.price || '') + '</span><span class="product-days">' + (item.days || '') + ' días</span>';
+            let pricesHTML = '';
+            if (item.priceType === 'dias' && item.days) {
+                pricesHTML = '<div class="product-bottom">';
+                const sortedDays = Object.keys(item.days).sort((a, b) => parseInt(a) - parseInt(b));
+                sortedDays.forEach(function(d) {
+                    pricesHTML += '<div class="product-price-row"><span class="product-price">' + item.days[d] + '</span><span class="product-days">' + d + ' días</span></div>';
+                });
+                pricesHTML += '</div>';
             } else {
-                priceHTML = '<span class="product-price">' + (item.priceUnico || item.price || '') + '</span>';
+                pricesHTML = '<div class="product-bottom"><div class="product-price-row"><span class="product-price">' + (item.priceUnico || item.price || '') + '</span></div></div>';
             }
 
             card.innerHTML =
@@ -910,9 +1397,7 @@
                 '<div class="product-info">' +
                     '<div class="product-name">' + item.name + '</div>' +
                     '<div class="product-desc">' + (item.desc || '') + '</div>' +
-                    '<div class="product-bottom">' +
-                        '<div>' + priceHTML + '</div>' +
-                    '</div>' +
+                    pricesHTML +
                 '</div>';
 
             return card;
