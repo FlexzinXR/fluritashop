@@ -797,22 +797,44 @@
                 <!-- METODOS DE PAGO -->
                 <div class="form-group">
                     <label>Métodos de Pago Aceptados *</label>
-                    <div style="display:flex;flex-direction:column;gap:0.5rem;">
-                        <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;font-size:0.9rem;color:var(--text-primary);">
-                            <input type="checkbox" id="payBBVA" name="paymentMethods" value="BBVA" style="width:16px;height:16px;accent-color:var(--blue-primary);">
-                            <span style="background:#004481;color:#fff;padding:0.2rem 0.5rem;border-radius:4px;font-size:0.75rem;font-weight:700;">BBVA</span>
-                            BBVA
-                        </label>
-                        <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;font-size:0.9rem;color:var(--text-primary);">
-                            <input type="checkbox" id="payUala" name="paymentMethods" value="Uala" style="width:16px;height:16px;accent-color:var(--blue-primary);">
-                            <span style="background:#7B2FBE;color:#fff;padding:0.2rem 0.5rem;border-radius:4px;font-size:0.75rem;font-weight:700;">Uala</span>
-                            Uala
-                        </label>
-                        <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;font-size:0.9rem;color:var(--text-primary);">
-                            <input type="checkbox" id="payPaypal" name="paymentMethods" value="PayPal" style="width:16px;height:16px;accent-color:var(--blue-primary);">
-                            <span style="background:#003087;color:#fff;padding:0.2rem 0.5rem;border-radius:4px;font-size:0.75rem;font-weight:700;">PayPal</span>
-                            PayPal
-                        </label>
+                    <div style="display:flex;flex-direction:column;gap:0.8rem;">
+
+                        <!-- BBVA -->
+                        <div>
+                            <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;font-size:0.9rem;color:var(--text-primary);">
+                                <input type="checkbox" id="payBBVA" name="paymentMethods" value="BBVA" style="width:16px;height:16px;accent-color:var(--blue-primary);" onchange="togglePayField('bbva', this.checked)">
+                                <span style="background:#004481;color:#fff;padding:0.2rem 0.5rem;border-radius:4px;font-size:0.75rem;font-weight:700;">BBVA</span>
+                                BBVA
+                            </label>
+                            <div id="fieldBbva" style="display:none;margin-top:0.5rem;padding-left:1.5rem;">
+                                <input type="text" id="prodBBVAData" placeholder="Alias o CBU de tu cuenta BBVA" style="width:100%;padding:0.7rem 1rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;color:var(--text-primary);font-size:0.85rem;outline:none;font-family:inherit;" onfocus="this.style.borderColor='var(--blue-primary)'" onblur="this.style.borderColor='var(--border-color)'">
+                            </div>
+                        </div>
+
+                        <!-- Uala -->
+                        <div>
+                            <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;font-size:0.9rem;color:var(--text-primary);">
+                                <input type="checkbox" id="payUala" name="paymentMethods" value="Uala" style="width:16px;height:16px;accent-color:var(--blue-primary);" onchange="togglePayField('uala', this.checked)">
+                                <span style="background:#7B2FBE;color:#fff;padding:0.2rem 0.5rem;border-radius:4px;font-size:0.75rem;font-weight:700;">Uala</span>
+                                Uala
+                            </label>
+                            <div id="fieldUala" style="display:none;margin-top:0.5rem;padding-left:1.5rem;">
+                                <input type="text" id="prodUalaData" placeholder="Alias o número de cuenta Uala" style="width:100%;padding:0.7rem 1rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;color:var(--text-primary);font-size:0.85rem;outline:none;font-family:inherit;" onfocus="this.style.borderColor='var(--blue-primary)'" onblur="this.style.borderColor='var(--border-color)'">
+                            </div>
+                        </div>
+
+                        <!-- PayPal -->
+                        <div>
+                            <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;font-size:0.9rem;color:var(--text-primary);">
+                                <input type="checkbox" id="payPaypal" name="paymentMethods" value="PayPal" style="width:16px;height:16px;accent-color:var(--blue-primary);" onchange="togglePayField('paypal', this.checked)">
+                                <span style="background:#003087;color:#fff;padding:0.2rem 0.5rem;border-radius:4px;font-size:0.75rem;font-weight:700;">PayPal</span>
+                                PayPal
+                            </label>
+                            <div id="fieldPaypal" style="display:none;margin-top:0.5rem;padding-left:1.5rem;">
+                                <input type="url" id="prodPaypalData" placeholder="Link de tu cuenta PayPal (ej: paypal.me/tunombre)" style="width:100%;padding:0.7rem 1rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;color:var(--text-primary);font-size:0.85rem;outline:none;font-family:inherit;" onfocus="this.style.borderColor='var(--blue-primary)'" onblur="this.style.borderColor='var(--border-color)'">
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <!-- NUMERO DE TELEFONO -->
@@ -1305,15 +1327,32 @@
             document.getElementById('dayPriceInputs').innerHTML = '';
             setPriceType('dias');
             document.getElementById('imagePreview').innerHTML = '<div class="upload-text"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="30" height="30"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><br>Click para subir captura</div>';
-            // Uncheck all payment methods
+            // Uncheck all payment methods and hide their fields
             ['payBBVA','payUala','payPaypal'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.checked = false;
+            });
+            ['fieldBbva','fieldUala','fieldPaypal'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+            ['prodBBVAData','prodUalaData','prodPaypalData'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
             });
         };
 
         window.closeAddModal = function() {
             document.getElementById('addModal').classList.remove('active');
+        };
+
+        // ===== TOGGLE PAY FIELD =====
+        window.togglePayField = function(method, checked) {
+            const fieldMap = { 'bbva': 'fieldBbva', 'uala': 'fieldUala', 'paypal': 'fieldPaypal' };
+            const fieldId = fieldMap[method];
+            if (fieldId) {
+                document.getElementById(fieldId).style.display = checked ? 'block' : 'none';
+            }
         };
 
         // ===== PRICE TYPE =====
@@ -1422,11 +1461,28 @@
             if (!game) { showToast('Selecciona un juego', 'error'); return; }
             if (!phone) { showToast('Ingresa el número de WhatsApp', 'error'); return; }
 
-            // Collect selected payment methods
+            // Collect selected payment methods with their data
             const paymentMethods = [];
-            if (document.getElementById('payBBVA').checked) paymentMethods.push('BBVA');
-            if (document.getElementById('payUala').checked) paymentMethods.push('Uala');
-            if (document.getElementById('payPaypal').checked) paymentMethods.push('PayPal');
+            const paymentData = {};
+
+            if (document.getElementById('payBBVA').checked) {
+                const bbvaData = document.getElementById('prodBBVAData').value.trim();
+                if (!bbvaData) { showToast('Ingresa el alias o CBU para BBVA', 'error'); return; }
+                paymentMethods.push('BBVA');
+                paymentData['BBVA'] = bbvaData;
+            }
+            if (document.getElementById('payUala').checked) {
+                const ualaData = document.getElementById('prodUalaData').value.trim();
+                if (!ualaData) { showToast('Ingresa el alias o número de cuenta Uala', 'error'); return; }
+                paymentMethods.push('Uala');
+                paymentData['Uala'] = ualaData;
+            }
+            if (document.getElementById('payPaypal').checked) {
+                const paypalData = document.getElementById('prodPaypalData').value.trim();
+                if (!paypalData) { showToast('Ingresa el link de PayPal', 'error'); return; }
+                paymentMethods.push('PayPal');
+                paymentData['PayPal'] = paypalData;
+            }
 
             if (paymentMethods.length === 0) {
                 showToast('Selecciona al menos un método de pago', 'error');
@@ -1440,6 +1496,7 @@
                 image: imageData || '',
                 priceType: priceType,
                 paymentMethods: paymentMethods,
+                paymentData: paymentData,
                 phone: phone,
                 createdAt: Date.now()
             };
@@ -1597,7 +1654,7 @@
                         document.querySelectorAll('.payment-method-option').forEach(el => el.classList.remove('selected'));
                         div.classList.add('selected');
                         currentBuyMethod = method;
-                        showPaymentInfo(method, product.phone);
+                        showPaymentInfo(method, product.phone, product.paymentData);
                     });
                     methodsContainer.appendChild(div);
                 });
@@ -1609,37 +1666,42 @@
             document.getElementById('buyModal').classList.add('active');
         };
 
-        function showPaymentInfo(method, phone) {
+        function showPaymentInfo(method, phone, paymentData) {
             const box = document.getElementById('paymentInfoBox');
             const title = document.getElementById('paymentInfoTitle');
             const detail = document.getElementById('paymentInfoDetail');
             const sub = document.getElementById('paymentInfoSub');
 
-            const phoneClean = (phone || '').replace(/\D/g, '');
-            const waLink = 'https://wa.me/' + phoneClean;
+            const data = (paymentData && paymentData[method]) ? paymentData[method] : null;
 
-            const infoMap = {
-                'BBVA': {
-                    title: 'Datos para pago BBVA',
-                    detail: 'Envía el pago al número de WhatsApp: ' + (phone || 'N/A') + '\nEl vendedor te enviará el alias/CBU por WhatsApp.',
-                    sub: 'Después de pagar, envía la captura por WhatsApp.'
-                },
-                'Uala': {
-                    title: 'Datos para pago Uala',
-                    detail: 'Envía el pago por Uala al número: ' + (phone || 'N/A'),
-                    sub: 'Después de pagar, envía la captura por WhatsApp.'
-                },
-                'PayPal': {
-                    title: 'Datos para pago PayPal',
-                    detail: 'Envía el pago por PayPal (Friends & Family) al número/correo del vendedor.\nContacta al vendedor por WhatsApp para obtener el correo PayPal: ' + (phone || 'N/A'),
-                    sub: 'Después de pagar, envía la captura por WhatsApp.'
+            if (method === 'BBVA') {
+                title.textContent = 'Transferencia BBVA';
+                detail.innerHTML = data
+                    ? '<strong>Alias / CBU:</strong> <span style="color:var(--blue-light);font-family:monospace;font-size:1rem;">' + data + '</span>'
+                    : 'Contacta al vendedor por WhatsApp para obtener el alias/CBU.';
+                sub.textContent = 'Realiza la transferencia y luego envía la captura por WhatsApp.';
+            } else if (method === 'Uala') {
+                title.textContent = 'Pago por Uala';
+                detail.innerHTML = data
+                    ? '<strong>Alias / Cuenta Uala:</strong> <span style="color:var(--blue-light);font-family:monospace;font-size:1rem;">' + data + '</span>'
+                    : 'Contacta al vendedor por WhatsApp para obtener los datos de Uala.';
+                sub.textContent = 'Envía el dinero por Uala y luego envía la captura por WhatsApp.';
+            } else if (method === 'PayPal') {
+                title.textContent = 'Pago por PayPal';
+                if (data) {
+                    const isLink = data.startsWith('http') || data.startsWith('paypal.me');
+                    const href = isLink ? (data.startsWith('http') ? data : 'https://' + data) : '#';
+                    detail.innerHTML = '<strong>Link de PayPal:</strong> <a href="' + href + '" target="_blank" style="color:var(--blue-light);word-break:break-all;">' + data + '</a>';
+                } else {
+                    detail.innerHTML = 'Contacta al vendedor por WhatsApp para obtener el link de PayPal.';
                 }
-            };
+                sub.textContent = 'Usa la opción "Amigos y Familiares" y luego envía la captura por WhatsApp.';
+            } else {
+                title.textContent = method;
+                detail.textContent = data || '';
+                sub.textContent = 'Envía la captura del comprobante por WhatsApp.';
+            }
 
-            const info = infoMap[method] || { title: method, detail: '', sub: '' };
-            title.textContent = info.title;
-            detail.textContent = info.detail;
-            sub.textContent = info.sub;
             box.classList.add('visible');
         }
 
@@ -1798,12 +1860,12 @@
             });
         });
     </script>
-    
+
 <script>
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("service-worker.js");
 }
 </script>
-    
+
 </body>
 </html>
